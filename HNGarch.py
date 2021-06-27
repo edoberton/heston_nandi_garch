@@ -132,7 +132,7 @@ class HNGarch(object):
 
     '''
     def __init__(self, timeseries=None, r_f=0.):
-        self.timeseries = timeseries.to_list()
+        self.timeseries = list(timeseries)
         self.omega = None
         self.alpha = None
         self.beta = None

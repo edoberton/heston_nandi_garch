@@ -132,7 +132,7 @@ class HNGarch(object):
 
     '''
     def __init__(self, timeseries=None, r_f=0.):
-        self.timeseries = timeseries
+        self.timeseries = timeseries.to_list()
         self.omega = None
         self.alpha = None
         self.beta = None
@@ -365,8 +365,7 @@ class HNGarch(object):
 
         h_t = self.h_t0
         z_star = normal(0,1)
-        s_t = [i for i in self.timeseries]
-        s_t = log(s_t[-1])
+        s_t = log(self.timeseries[-1])
         s = []
 
         for i in range(n_steps):
@@ -444,7 +443,7 @@ class HNGarch(object):
         gam = self.gamma_star
         lam = -0.5
         
-        s = self.timeseries.iloc[-1]
+        s = self.timeseries[-1]
         h = self.ts_var(vec=False)
         
         hi = float(up_lim-low_lim)/prec
@@ -500,7 +499,7 @@ class HNGarch(object):
         gam = self.gamma_star
         lam = -0.5
         
-        s = self.timeseries.iloc[-1]
+        s = self.timeseries[-1]
         h = self.ts_var(vec=False)
         
         hi = float(up_lim-low_lim)/prec

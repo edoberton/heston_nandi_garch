@@ -457,16 +457,15 @@ class HNGarch(object):
         for i in range(steps):
             a = A_loop(a, b, r, it, omega, alpha)
             b = B_loop(b, it, alpha, beta, gam, lam)
-            
-        def pdf(x):
-            f = s**it
-            g = np.exp(a + b * h)
-            func = np.real(np.exp(-it*x) * f * g)
         
-            area = func*hi
-            return np.sum(area)/np.pi
-        vpdf = np.vectorize(pdf)
-        return vpdf(x)    
+        vec = x.reshape(-1,1)
+        
+        f = s**it
+        g = np.exp(a + b * h)
+        func = np.real(np.exp(-it*vec) * f * g)
+        
+        area = func*hi
+        return area.sum(axis=1)/np.pi
     
     def cdf_func(self, x, steps, r=0., up_lim=100, low_lim=0, prec=10000):
         '''
@@ -513,17 +512,16 @@ class HNGarch(object):
         for i in range(steps):
             a = A_loop(a, b, r, it, omega, alpha)
             b = B_loop(b, it, alpha, beta, gam, lam)
-            
-        def cdf(x):
-            f = s**it
-            g = np.exp(a + b * h)
-            j = np.exp(-it*x) * f * g
-            func = np.real(j/it)
         
-            area = func*hi
-            return 0.5 - np.sum(area)/np.pi
-        vcdf = np.vectorize(cdf)
-        return vcdf(x)
+        vec = x.reshape(-1,1)
+        
+        f = s**it
+        g = np.exp(a + b * h)
+        j = np.exp(-it*vec) * f * g
+        func = np.real(j/it)
+        
+        area = func*hi
+        return 0.5 - area.sum(axis=1)/np.pi
     
 #%% MAIN
 if __name__ == '__main__':
